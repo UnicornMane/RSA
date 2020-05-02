@@ -1,0 +1,74 @@
+#include <iostream>
+#include <random>
+#include <cinttypes>
+#include <ctime>
+using namespace std;
+__int128 gcdex(__int128 a, __int128 b, __int128& x, __int128& y);
+__int128 inverse(__int128 a, __int128 m);
+__int128 binPower(__int128 a, __int128 k, __int128 n);
+
+
+
+auto main() -> signed
+{
+    srand(time(0));
+
+    __int128 p = 1e3+13, q = 1e3+9;//909091, 333667
+	
+    __int128 n = p * q;
+	
+    __int128 k = (p - 1) * (q - 1);
+	
+    __int128 e = 101;
+	
+    __int128 d = inverse(e, k);
+	
+    __int128 nm = rand() % p*q;
+    cout << "message:\t" << nm;
+	
+    __int128 c = binPower(nm, e, n);
+    cout << "\nencr:\t\t" << c;
+	
+    cout << "\ndecr:\t\t" << binPower(c, d, n);
+}
+
+
+__int128 inverse(__int128 a, __int128 m)
+{
+    __int128 x, y;
+    gcdex(a, m, x, y);
+    x = (x % m + m) % m;
+    return x;
+}
+
+__int128 gcdex(__int128 a, __int128 b, __int128& x, __int128& y)
+{
+    if (a == 0)
+    {
+        x = 0;
+        y = 1;
+        return b;
+    }
+    __int128 x1, y1;
+    __int128 d = gcdex(b % a, a, x1, y1);
+    x = y1 - (b / a) * x1;
+    y = x1;
+    return d;
+}
+
+
+
+__int128 binPower(__int128 a, __int128 k, __int128 n)
+{
+    __int128 res = 1;
+    while (k)
+    {
+        if (k & 1)
+        {
+            res = (a % n) * (res % n) % n;
+        }
+        a = (a % n) * (a % n) % n;
+        k >>= 1;
+    }
+    return res % n;
+}

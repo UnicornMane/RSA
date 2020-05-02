@@ -65,9 +65,9 @@ __int128 binPower(__int128 a, __int128 k, __int128 n)
     {
         if (k & 1)
         {
-            res = (a % n) * (res % n) % n;
+            res = a % n * (res % n) % n;
         }
-        a = (a % n) * (a % n) % n;
+        a = a % n * (a % n) % n;
         k >>= 1;
     }
     return res % n;
